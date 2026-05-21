@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suryansh Verma — Tech Soul</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0e1a;
+    --navy2: #10152a;
+    --navy3: #161d35;
+    --electric: #00d4ff;
+    --electric2: #0099cc;
+    --amber: #f59e0b;
+    --amber2: #fbbf24;
+    --mint: #10b981;
+    --coral: #f97316;
+    --white: #f0f4ff;
+    --muted: #8892b0;
+    --card: #111827;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--electric);
+    border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease, background 0.2s;
+    mix-blend-mode: screen;
+  }
+
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--electric);
+    border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9998;
+    transition: transform 0.35s ease, width 0.2s, height 0.2s;
+    mix-blend-mode: screen; opacity: 0.5;
+  }
+
+  /* Stars */
+  .stars {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 50%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 20% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 25%, rgba(0,212,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 55%, rgba(0,212,255,0.3) 0%, transparent 100%);
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 1.2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(10,14,26,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    color: var(--electric);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--electric); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    position: relative; padding: 8rem 2rem 4rem;
+    z-index: 1;
+  }
+
+  .hero-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; color: var(--electric);
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 800; line-height: 0.92;
+    letter-spacing: -0.04em;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .hero-name .sur { color: var(--white); }
+  .hero-name .yansh { color: var(--electric); }
+  .hero-name .ver { color: var(--amber); }
+  .hero-name .ma { color: var(--mint); }
+
+  .hero-sub {
+    margin-top: 1.8rem;
+    font-size: 1.15rem; color: var(--muted);
+    max-width: 520px; line-height: 1.7;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .flirt-pill {
+    display: inline-block; margin-top: 1.5rem;
+    background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(245,158,11,0.12));
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 100px; padding: 0.6rem 1.8rem;
+    font-size: 0.95rem; color: var(--electric);
+    font-style: italic;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+
+  .hero-orbit {
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0,212,255,0.2);
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: spin 20s linear infinite;
+    pointer-events: none;
+  }
+
+  .hero-orbit::before {
+    content: '⚡';
+    position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+  }
+
+  @keyframes spin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 20px rgba(0,212,255,0.3); } 50% { box-shadow: 0 0 50px rgba(0,212,255,0.6); } }
+
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+  /* Section base */
+  section {
+    position: relative; z-index: 1;
+    padding: 6rem 2rem;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: var(--electric);
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 1rem;
+  }
+
+  /* Countdown */
+  .countdown-section {
+    background: var(--navy2);
+    border-top: 1px solid rgba(0,212,255,0.1);
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+    text-align: center;
+  }
+
+  .countdown-wrap {
+    display: flex; gap: 2rem;
+    justify-content: center; flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+
+  .cd-box {
+    background: var(--card);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    min-width: 130px;
+    position: relative; overflow: hidden;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  .cd-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--electric), transparent);
+  }
+
+  .cd-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem; font-weight: 800;
+    color: var(--electric); line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cd-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+
+  .birthday-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--amber), var(--coral));
+    color: var(--navy); padding: 0.5rem 1.5rem;
+    border-radius: 100px; font-weight: 600;
+    font-size: 0.9rem; margin-top: 1rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Moon section */
+  .moon-card {
+    background: linear-gradient(135deg, #0d1a3a, #1a0d3a);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 24px;
+    padding: 3rem;
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 3rem; align-items: center;
+    margin-top: 3rem;
+  }
+
+  .moon-svg-wrap { text-align: center; }
+
+  .moon-svg {
+    width: 160px; height: 160px;
+    filter: drop-shadow(0 0 30px rgba(245,158,11,0.5));
+    animation: moonGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes moonGlow { 0%,100% { filter: drop-shadow(0 0 30px rgba(245,158,11,0.4)); } 50% { filter: drop-shadow(0 0 60px rgba(245,158,11,0.8)); } }
+
+  .moon-fact { font-size: 1.05rem; color: var(--muted); line-height: 1.8; }
+  .moon-fact strong { color: var(--amber); font-family: 'Syne', sans-serif; font-size: 1.3rem; display: block; margin-bottom: 0.8rem; }
+
+  .moon-phase-tag {
+    display: inline-block; margin-top: 1rem;
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.3);
+    color: var(--amber); padding: 0.4rem 1.2rem;
+    border-radius: 100px; font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.1em;
+  }
+
+  /* Photo grid */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+    margin-top: 3rem;
+  }
+
+  .photo-card {
+    position: relative; overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer; aspect-ratio: 4/3;
+    background: var(--card);
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .photo-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(0,212,255,0.4);
+  }
+
+  .photo-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s;
+  }
+
+  .photo-card:hover img { transform: scale(1.08); }
+
+  .photo-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(10,14,26,0.92));
+    padding: 1.5rem 1rem 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+  }
+
+  .photo-card:hover .photo-overlay { transform: translateY(0); }
+
+  .photo-caption {
+    font-size: 0.85rem; color: var(--electric);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Flirty lines */
+  .flirt-section { background: var(--navy2); }
+
+  .flirt-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+
+  .flirt-card {
+    background: var(--card);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .flirt-card:hover {
+    border-color: rgba(0,212,255,0.4);
+    transform: translateY(-4px);
+  }
+
+  .flirt-card::before {
+    content: attr(data-num);
+    position: absolute; top: -1rem; right: 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 5rem; font-weight: 800;
+    color: rgba(0,212,255,0.05);
+    line-height: 1;
+  }
+
+  .flirt-quote {
+    font-size: 1rem; line-height: 1.7; color: var(--white);
+    font-style: italic;
+  }
+
+  .flirt-emoji { font-size: 1.5rem; margin-bottom: 1rem; }
+
+  /* Name meaning */
+  .name-section { background: var(--navy3); }
+
+  .name-breakdown {
+    margin-top: 3rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .name-part {
+    background: var(--card);
+    border-radius: 20px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.3s;
+  }
+
+  .name-part:hover { transform: translateY(-6px); }
+
+  .name-part-header {
+    padding: 2rem;
+    position: relative;
+  }
+
+  .name-part-header.suryansh { background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(16,185,129,0.1)); border-bottom: 1px solid rgba(0,212,255,0.2); }
+  .name-part-header.verma { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(249,115,22,0.1)); border-bottom: 1px solid rgba(245,158,11,0.2); }
+
+  .name-word {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .name-word.electric { color: var(--electric); }
+  .name-word.amber { color: var(--amber); }
+
+  .name-origin {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  .name-body { padding: 2rem; }
+
+  .name-breakdown-parts {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .name-chunk {
+    background: rgba(0,212,255,0.1); color: var(--electric);
+    padding: 0.25rem 0.75rem; border-radius: 100px;
+    font-family: 'Space Mono', monospace; font-size: 0.8rem;
+  }
+
+  .name-chunk.amber { background: rgba(245,158,11,0.1); color: var(--amber); }
+
+  .name-meaning-text { color: var(--muted); line-height: 1.8; font-size: 0.95rem; }
+  .name-meaning-text strong { color: var(--white); font-weight: 500; }
+
+  /* Song player */
+  .player-section { background: var(--navy); }
+
+  .audio-player {
+    background: var(--card);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 24px; padding: 2.5rem;
+    max-width: 600px; margin: 3rem auto 0;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+
+  .audio-player::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,212,255,0.03), rgba(245,158,11,0.03));
+  }
+
+  .player-song-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.3rem;
+  }
+
+  .player-artist {
+    color: var(--muted); font-size: 0.9rem;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 2rem;
+  }
+
+  .waveform {
+    display: flex; gap: 4px; align-items: center;
+    justify-content: center; height: 60px; margin-bottom: 2rem;
+  }
+
+  .wave-bar {
+    width: 4px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--electric), var(--mint));
+    animation: waveDance 1.2s ease-in-out infinite;
+    opacity: 0.6;
+  }
+
+  .wave-bar.playing { opacity: 1; }
+
+  @keyframes waveDance {
+    0%,100% { height: 8px; }
+    50% { height: var(--h); }
+  }
+
+  .player-controls { display: flex; gap: 1.5rem; justify-content: center; align-items: center; }
+
+  .play-btn {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--electric), var(--mint));
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: pulseGlow 2s infinite;
+  }
+
+  .play-btn:hover { transform: scale(1.08); }
+
+  .player-note {
+    margin-top: 1.5rem;
+    font-size: 0.82rem; color: var(--muted);
+    font-style: italic;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--navy2);
+    border-top: 1px solid rgba(0,212,255,0.1);
+    padding: 4rem 2rem 3rem;
+    text-align: center; z-index: 1; position: relative;
+  }
+
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem; font-weight: 800;
+    color: var(--electric); letter-spacing: -0.03em;
+  }
+
+  .footer-tagline {
+    color: var(--muted); margin-top: 0.5rem;
+    font-family: 'Space Mono', monospace; font-size: 0.78rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  .footer-copy {
+    margin-top: 3rem; color: rgba(136,146,176,0.5);
+    font-size: 0.8rem;
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--electric), var(--mint));
+    border-radius: 2px;
+    margin: 1.5rem auto 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .moon-card { grid-template-columns: 1fr; text-align: center; }
+    .hero-name { font-size: 3.2rem; }
+  }
+
+  /* Glitch text */
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+  }
+
+  .glitch::before {
+    color: var(--electric); clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    transform: translate(-2px, 0);
+    animation: glitch1 3s infinite;
+  }
+
+  .glitch::after {
+    color: var(--coral); clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    transform: translate(2px, 0);
+    animation: glitch2 3s infinite;
+  }
+
+  @keyframes glitch1 {
+    0%,90%,100% { transform: translate(-2px,0); opacity: 0; }
+    92% { transform: translate(-4px,-2px); opacity: 1; }
+    96% { transform: translate(2px,0); opacity: 1; }
+  }
+
+  @keyframes glitch2 {
+    0%,90%,100% { transform: translate(2px,0); opacity: 0; }
+    93% { transform: translate(4px,2px); opacity: 1; }
+    97% { transform: translate(-2px,0); opacity: 1; }
+  }
+
+  /* Scroll progress */
+  .progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px; background: linear-gradient(90deg, var(--electric), var(--mint));
+    z-index: 200; width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* Fade in on scroll */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
+  .revealed { opacity: 1; transform: translateY(0); }
+
+  /* Tech chips */
+  .tech-chips { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1.5rem; }
+
+  .chip {
+    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
+    color: var(--electric); padding: 0.35rem 1rem;
+    border-radius: 100px; font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.05em;
+    transition: background 0.2s;
+  }
+
+  .chip:hover { background: rgba(0,212,255,0.18); }
+
+  .age-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; color: var(--mint);
+    margin-top: 1rem;
+    border: 1px solid rgba(16,185,129,0.3);
+    display: inline-block; padding: 0.4rem 1rem;
+    border-radius: 100px;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+<div class="progress-bar" id="progress"></div>
+<div class="stars"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">SV</div>
+  <div class="nav-links">
+    <a href="#countdown">Birthday</a>
+    <a href="#moon">Moon</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#vibes">Vibes</a>
+    <a href="#name">Name</a>
+    <a href="#music">Music</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-orbit"></div>
+  <p class="hero-tagline">✦ Born to build the web ✦</p>
+  <h1 class="hero-name">
+    <span class="sur">Sur</span><span class="yansh">yansh</span><br>
+    <span class="ver glitch" data-text="Ver">Ver</span><span class="ma">ma</span>
+  </h1>
+  <p class="hero-sub">A tech soul born on June 29, 2008. Turning ideas into pixels, curiosity into code, and the internet into art.</p>
+  <div class="tech-chips">
+    <span class="chip">Web Design</span>
+    <span class="chip">Tech Enthusiast</span>
+    <span class="chip">Creative Coder</span>
+    <span class="chip">Future Builder</span>
+    <span class="chip">Digital Dreamer</span>
+  </div>
+  <div class="flirt-pill">"If you were a programming language, you'd be JavaScript — unexpectedly brilliant and impossible to ignore." 💻</div>
+  <span class="scroll-hint">scroll down ↓</span>
+</section>
+
+<!-- Countdown -->
+<section class="countdown-section" id="countdown">
+  <div class="container">
+    <p class="section-label">⏳ Time to Next Birthday</p>
+    <h2 class="section-title" style="text-align:center;">Counting Down to June 29</h2>
+    <div class="divider"></div>
+    <div class="countdown-wrap" id="cdwrap">
+      <div class="cd-box"><div class="cd-num" id="cd-d">00</div><div class="cd-label">Days</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Hours</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Minutes</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Seconds</div></div>
+    </div>
+    <div style="text-align:center; margin-top:2rem;">
+      <div class="birthday-badge" id="bday-msg">🎂 Born: June 29, 2008</div>
+      <div class="age-display" id="age-display">Calculating age...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Moon -->
+<section id="moon" style="background: var(--navy);">
+  <div class="container reveal">
+    <p class="section-label">🌙 Celestial Birth Record</p>
+    <h2 class="section-title">The Moon on Your Birth Night</h2>
+    <div class="divider" style="margin:0 0 0;"></div>
+    <div class="moon-card">
+      <div class="moon-svg-wrap">
+        <svg class="moon-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="moonGrad" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#fff9c4"/>
+              <stop offset="40%" stop-color="#fbbf24"/>
+              <stop offset="100%" stop-color="#92400e"/>
+            </radialGradient>
+            <mask id="crescentMask">
+              <circle cx="80" cy="80" r="68" fill="white"/>
+              <circle cx="108" cy="66" r="58" fill="black"/>
+            </mask>
+          </defs>
+          <circle cx="80" cy="80" r="68" fill="url(#moonGrad)" mask="url(#crescentMask)"/>
+          <circle cx="52" cy="72" r="6" fill="rgba(0,0,0,0.12)"/>
+          <circle cx="72" cy="100" r="4" fill="rgba(0,0,0,0.1)"/>
+          <circle cx="62" cy="58" r="3" fill="rgba(0,0,0,0.08)"/>
+          <circle cx="45" cy="90" r="5" fill="rgba(0,0,0,0.09)"/>
+        </svg>
+        <div class="moon-phase-tag">🌒 Waxing Crescent</div>
+      </div>
+      <div class="moon-fact">
+        <strong>🌒 Waxing Crescent Moon</strong>
+        On June 29, 2008 — the night you arrived on this earth — the moon wore its most hopeful face: a <em>Waxing Crescent</em>. In lunar lore, this phase symbolises <strong>new beginnings, growing ambitions, and the rising of something extraordinary</strong>. The moon was just 4 days old, illuminated at about <strong>14%</strong>, quietly rising in the western sky just after sunset.<br><br>
+        People born under a Waxing Crescent are said to be <strong>curious, driven, natural initiators</strong> — always beginning something new, building towards a dream. That's you, Suryansh. The universe was literally under construction the night you were born.
+        <br><br>
+        <span style="color: var(--mint); font-size:0.88rem; font-family: 'Space Mono', monospace;">Moon Illumination: ~14% · Lunar Day: 4 · Rising: WSW</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" style="background: var(--navy2);">
+  <div class="container reveal">
+    <p class="section-label">📸 29 Tech Inspirations</p>
+    <h2 class="section-title">A Gallery for a Builder's Mind</h2>
+    <div class="divider" style="margin: 0 0 0;"></div>
+    <p style="color: var(--muted); margin-top:1rem; font-size:0.95rem;">29 images — one for each day of the month you were born — to fuel the fire in you.</p>
+    <div class="photo-grid" id="photoGrid"></div>
+  </div>
+</section>
+
+<!-- Flirty Vibes -->
+<section class="flirt-section" id="vibes">
+  <div class="container reveal">
+    <p class="section-label">💬 Just for You</p>
+    <h2 class="section-title">Lines That Know You</h2>
+    <div class="divider" style="margin:0 0 0;"></div>
+    <div class="flirt-grid" id="flirtGrid"></div>
+  </div>
+</section>
+
+<!-- Name Meaning -->
+<section class="name-section" id="name">
+  <div class="container reveal">
+    <p class="section-label">🔤 Your Identity Decoded</p>
+    <h2 class="section-title">The Meaning Behind Every Letter</h2>
+    <div class="divider" style="margin:0 0 0;"></div>
+    <p style="color: var(--muted); margin-top:1rem; max-width:600px; line-height:1.8;">Your name isn't just a label — it's a prophecy. Here's what every syllable of <em style="color:var(--electric);">Suryansh Verma</em> tells the world about you.</p>
+    <div class="name-breakdown">
+
+      <!-- SURYANSH -->
+      <div class="name-part">
+        <div class="name-part-header suryansh">
+          <div class="name-word electric">Suryansh</div>
+          <div class="name-origin">Sanskrit Origin · सूर्यांश</div>
+        </div>
+        <div class="name-body">
+          <div class="name-breakdown-parts">
+            <span class="name-chunk">सूर्य (Surya)</span>
+            <span class="name-chunk">+</span>
+            <span class="name-chunk">अंश (Ansh)</span>
+          </div>
+          <div class="name-meaning-text">
+            <strong>सूर्य (Surya)</strong> means <strong>"The Sun"</strong> — the most luminous, life-giving force in the solar system. In Hindu tradition, Surya is the deity of light, truth, and cosmic energy. The sun gives without asking. It rises daily with zero excuses.<br><br>
+            <strong>अंश (Ansh)</strong> means <strong>"Part" or "Portion"</strong> — specifically, a fragment of something divine. Not a copy, not a shadow — a genuine piece of the source itself.<br><br>
+            Together, <span style="color:var(--electric); font-weight:500;">Suryansh</span> literally means <strong>"A Part of the Sun"</strong> — a fragment of solar energy given human form. You carry warmth, radiance, and that unstoppable brightness everywhere you go. Just like the sun, you're meant to illuminate things — code, designs, ideas, and people around you.
+          </div>
+        </div>
+      </div>
+
+      <!-- VERMA -->
+      <div class="name-part">
+        <div class="name-part-header verma">
+          <div class="name-word amber">Verma</div>
+          <div class="name-origin">Sanskrit Origin · वर्मा</div>
+        </div>
+        <div class="name-body">
+          <div class="name-breakdown-parts">
+            <span class="name-chunk amber">वर्मन् (Varman)</span>
+            <span class="name-chunk amber">→</span>
+            <span class="name-chunk amber">वर्मा (Verma)</span>
+          </div>
+          <div class="name-meaning-text">
+            <strong>Verma</strong> derives from the Sanskrit word <strong>वर्मन् (Varman)</strong>, meaning <strong>"Shield" or "Armour"</strong>. Historically, it was the title given to the <em>Kshatriya</em> warrior class — the protectors, the defenders, the ones who stood strong when others could not.<br><br>
+            In modern usage, Verma signifies <strong>protection, strength, nobility, and resilience</strong>. It's carried by families who have long stood as pillars — not just fighters, but guardians of values, culture, and community.<br><br>
+            <span style="color:var(--amber); font-weight:500;">Verma</span> tells the world: <strong>"This person is the armour."</strong> Someone who shields the weak, stands firm in difficulty, and carries an inherited legacy of courage. Your surname is your superpower.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Full name summary -->
+    <div style="margin-top:2.5rem; background: var(--card); border: 1px solid rgba(0,212,255,0.15); border-radius:20px; padding:2.5rem; text-align:center;">
+      <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:var(--muted); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:1rem;">Complete Name Meaning</div>
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--white); margin-bottom:1rem;">
+        <span style="color:var(--electric);">Suryansh</span> <span style="color:var(--amber);">Verma</span>
+      </div>
+      <div style="color:var(--muted); font-size:1.05rem; line-height:1.8; max-width:580px; margin:0 auto;">
+        <strong style="color:var(--white);">"A Fragment of the Sun Who is Also a Shield"</strong><br><br>
+        You are radiant <em>and</em> resilient. You shine <em>and</em> you protect. You're the kind of person who lights up a room and also makes the people in it feel safe. That's rare. That's Suryansh Verma.
+      </div>
+    </div>
+
+    <!-- Letter acrostic -->
+    <div style="margin-top:2rem; background: var(--navy3); border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:2rem;">
+      <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:var(--muted); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:1.5rem;">S·U·R·Y·A·N·S·H · V·E·R·M·A — Acrostic</div>
+      <div id="acrostic" style="font-family:'Space Mono',monospace; font-size:0.88rem; line-height:2.2;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Music -->
+<section class="player-section" id="music">
+  <div class="container reveal" style="text-align:center;">
+    <p class="section-label">🎵 Vibe Check</p>
+    <h2 class="section-title">Your Soundtrack</h2>
+    <div class="divider" style="margin: 0 auto;"></div>
+    <div class="audio-player">
+      <div style="font-size:3rem; margin-bottom:1rem;">🎧</div>
+      <div class="player-song-name">Blinding Lights</div>
+      <div class="player-artist">The Weeknd · Synthwave Energy</div>
+      <div class="waveform" id="waveform"></div>
+      <div style="font-size:0.78rem; color:var(--muted); font-family:'Space Mono',monospace; margin-bottom:1.5rem;" id="time-display">
+        ♪ Chosen for the night-owl coder in you ♪
+      </div>
+      <div class="player-controls">
+        <span style="font-size:1.5rem; cursor:pointer; color:var(--muted); transition:color 0.2s;" onmouseenter="this.style.color='var(--electric)'" onmouseleave="this.style.color='var(--muted)'">⏮</span>
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+        <span style="font-size:1.5rem; cursor:pointer; color:var(--muted); transition:color 0.2s;" onmouseenter="this.style.color='var(--electric)'" onmouseleave="this.style.color='var(--muted)'">⏭</span>
+      </div>
+      <p class="player-note">🎵 Songs curated for a tech mind that dreams big — open Spotify and search these: "Blinding Lights" · "Midnight City" · "Digital Love" by Daft Punk · "Starboy" · "The Less I Know The Better"</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-name">Suryansh Verma</div>
+  <div class="footer-tagline">Fragment of the Sun · Shield of Strength · Born June 29, 2008</div>
+  <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <span class="chip">Web Designer</span>
+    <span class="chip">Tech Soul</span>
+    <span class="chip">Future's Builder</span>
+  </div>
+  <div class="footer-copy">Made with ☀️ & 💙 · Every pixel placed with care for you, Suryansh</div>
+</footer>
+
+<script>
+// Cursor
+const cur = document.getElementById('cur');
+const ring = document.getElementById('ring');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx-6+'px'; cur.style.top=my-6+'px'; });
+setInterval(()=>{ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx-18+'px'; ring.style.top=ry-18+'px'; },16);
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const s = window.scrollY;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress').style.width = (s/h*100)+'%';
+});
+
+// Countdown
+function updateCountdown() {
+  const now = new Date();
+  let next = new Date(now.getFullYear(), 5, 29); // June=5
+  if (now > next) next.setFullYear(next.getFullYear()+1);
+  const diff = next - now;
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+
+  // Age
+  const born = new Date(2008,5,29);
+  let age = now.getFullYear()-2008;
+  if(now < new Date(now.getFullYear(),5,29)) age--;
+  document.getElementById('age-display').textContent = `Age: ${age} years old · Born a Gemini-Cancer cusp ♊`;
+
+  if(d===0 && h===0) {
+    document.getElementById('bday-msg').textContent = '🎉 HAPPY BIRTHDAY SURYANSH! 🎉';
+  }
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Photos - 29 inspiring tech images from Unsplash
+const photos = [
+  { url:'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80', cap:'Code in the Dark' },
+  { url:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80', cap:'Circuit Dreams' },
+  { url:'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80', cap:'The Matrix Awaits' },
+  { url:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80', cap:'Retro Pixel Art' },
+  { url:'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=600&q=80', cap:'Web Rainbow' },
+  { url:'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&q=80', cap:'Silver Laptop Setup' },
+  { url:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', cap:'Coder at Night' },
+  { url:'https://images.unsplash.com/photo-1607706189992-eae578626c86?w=600&q=80', cap:'Developer Station' },
+  { url:'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80', cap:'Coding the Future' },
+  { url:'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600&q=80', cap:'Lines of Logic' },
+  { url:'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=600&q=80', cap:'Neon Terminal' },
+  { url:'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80', cap:'Tech in Motion' },
+  { url:'https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=600&q=80', cap:'AI Visualization' },
+  { url:'https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=600&q=80', cap:'Digital Cosmos' },
+  { url:'https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?w=600&q=80', cap:'Coders Lounge' },
+  { url:'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&q=80', cap:'Girl Meets Machine' },
+  { url:'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80', cap:'Fiber Optics' },
+  { url:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80', cap:'Data Planet' },
+  { url:'https://images.unsplash.com/photo-1506399558188-acebb54d054a?w=600&q=80', cap:'Robot Dreams' },
+  { url:'https://images.unsplash.com/photo-1492551557933-34265f7af79e?w=600&q=80', cap:'Neural Network' },
+  { url:'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&q=80', cap:'Dual Monitor Life' },
+  { url:'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80&sat=-50', cap:'Monochrome Build' },
+  { url:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80', cap:'Team Code' },
+  { url:'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=80', cap:'AI Face' },
+  { url:'https://images.unsplash.com/photo-1546146830-2cca9512c68e?w=600&q=80', cap:'Chip Level' },
+  { url:'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600&q=80', cap:'MacBook Workspace' },
+  { url:'https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=600&q=80', cap:'Night Hustle' },
+  { url:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80', cap:'Clean Setup' },
+  { url:'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80', cap:'VS Code Vibes' },
+];
+
+const grid = document.getElementById('photoGrid');
+photos.forEach((p,i)=>{
+  const card = document.createElement('div');
+  card.className='photo-card';
+  card.innerHTML=`<img src="${p.url}" alt="${p.cap}" loading="lazy"/><div class="photo-overlay"><div class="photo-caption">#${String(i+1).padStart(2,'0')} · ${p.cap}</div></div>`;
+  grid.appendChild(card);
+});
+
+// Flirty lines
+const lines = [
+  { em:'💡', txt:'If your personality were an IDE, it would have dark mode on by default — because brilliant minds work best in the dark.' },
+  { em:'⌨️', txt:'You\'ve got that rare combo: a face that breaks focus and a mind that builds things. Absolutely unfair, honestly.' },
+  { em:'🌐', txt:'The way you approach web design — I\'d let you redesign my entire world, no wireframes needed.' },
+  { em:'🔥', txt:'There\'s something about a person who understands both aesthetics and logic. You\'re like CSS that actually works on every browser.' },
+  { em:'🚀', txt:'You were born when the web was just finding its groove. Coincidence? No. The internet was literally waiting for you.' },
+  { em:'💫', txt:'Your future is a 4K resolution — crystal clear, wildly impressive, and impossible to look away from.' },
+  { em:'⚡', txt:'You don\'t just use the internet. You understand it. And that alone makes you more interesting than 99% of people I\'ve met.' },
+  { em:'🎯', txt:'Born a Gemini-Cancer cusp, you have the curiosity of an explorer and the depth of an ocean. Your code probably reflects that too.' },
+  { em:'🌟', txt:'Some people look at a blank screen and feel stuck. You look at it and see a universe waiting to happen. That\'s the difference.' },
+];
+
+const fg = document.getElementById('flirtGrid');
+lines.forEach((l,i)=>{
+  const card=document.createElement('div');
+  card.className='flirt-card';
+  card.setAttribute('data-num',String(i+1).padStart(2,'0'));
+  card.innerHTML=`<div class="flirt-emoji">${l.em}</div><div class="flirt-quote">${l.txt}</div>`;
+  fg.appendChild(card);
+});
+
+// Acrostic
+const acrosticData = [
+  ['S','Sunlit — You carry warmth that doesn\'t need to announce itself'],
+  ['U','Unstoppable — Every idea you have is a runway, not a roadblock'],
+  ['R','Radiant — A Part of the Sun, literally, by name and by nature'],
+  ['Y','Young and visionary — You are already building the world\'s next chapter'],
+  ['A','Ambitious — You were born to aim higher than the browser tab'],
+  ['N','Nurturing — You build things that make others\' lives better'],
+  ['S','Stellar — Your mind moves at the speed of light, always'],
+  ['H','Heroic — The kind of person who leads without needing to be asked'],
+  ['', ''],
+  ['V','Valiant — Your surname said it first: you are armour, you are shield'],
+  ['E','Evolving — Every project makes you sharper, every bug makes you wiser'],
+  ['R','Relentless — The semicolon missing at line 47 will not defeat you'],
+  ['M','Mighty — Not loud. Not boastful. Just quietly, devastatingly capable'],
+  ['A','Auspicious — You were born under a crescent moon on a rising tide'],
+];
+
+const acEl = document.getElementById('acrostic');
+acrosticData.forEach(row=>{
+  if(!row[0]) { acEl.innerHTML+='<br>'; return; }
+  acEl.innerHTML+=`<span style="color:var(--electric);font-weight:700;font-size:1rem;">${row[0]}</span><span style="color:var(--muted)"> — ${row[1]}</span><br>`;
+});
+
+// Waveform
+const wf = document.getElementById('waveform');
+const heights = [20,35,50,65,80,60,45,30,55,70,85,60,40,25,55,70,45,30,60,80,65,45,30,20,40,60,75,50,35,20];
+heights.forEach((h,i)=>{
+  const bar=document.createElement('div');
+  bar.className='wave-bar';
+  bar.style.setProperty('--h', h+'px');
+  bar.style.animationDelay=i*0.06+'s';
+  bar.style.animationDuration=(0.8+Math.random()*0.8)+'s';
+  wf.appendChild(bar);
+});
+
+// Player toggle
+let playing=false;
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('playBtn').textContent=playing?'⏸':'▶';
+  document.querySelectorAll('.wave-bar').forEach(b=>b.classList.toggle('playing',playing));
+}
+
+// Reveal on scroll
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('revealed'); });
+},{ threshold:0.1 });
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
